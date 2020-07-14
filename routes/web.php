@@ -19,7 +19,17 @@ use Illuminate\Support\Facades\Route;
 
 
 
+// Route::get('/', function () {
+//     $httpClient = app('GuzzleHttp\Client'); // ou app()->make('GuzzleHttp\Client').
+//     dd($httpClient);
+// });
+
+
+
 Route::get('/', function () {
-    $httpClient = app('GuzzleHttp\Client'); // ou app()->make('GuzzleHttp\Client').
-    dd($httpClient);
+    $userDataService = app('App\Contracts\ExternalDataInterface');
+    $responseBody = (string) $userDataService->getData('/users')->getBody();
+    return response($responseBody, 200, [
+        'Content-Type' => 'application/json'
+    ]);
 });
